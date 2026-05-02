@@ -264,8 +264,183 @@
       margin-bottom: 12px;
       display: block;
     }
+
+    /* 景点弹窗 */
+    .spot-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .spot-modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .spot-modal {
+      width: 520px;
+      max-height: 88vh;
+      background: var(--color-background-primary, #fff);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    .spot-modal-overlay.active .spot-modal {
+      transform: translateY(0);
+    }
+    .photo-area {
+      position: relative;
+      height: 320px;
+      background: #1a2744;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .photo-area img.spot-photo {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.4s ease;
+    }
+    .photo-counter {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 20px;
+      font-family: "Noto Serif SC", serif;
+    }
+    .photo-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.25);
+      border: none;
+      color: #fff;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .photo-btn:hover { background: rgba(255,255,255,0.4); }
+    .photo-btn.prev { left: 12px; }
+    .photo-btn.next { right: 12px; }
+    .photo-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+    }
+    .photo-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .photo-dot.active { background: #fff; }
+    .modal-body {
+      padding: 16px 14px 20px;
+      overflow-y: auto;
+    }
+    .modal-body::-webkit-scrollbar { width: 3px; }
+    .modal-body::-webkit-scrollbar-thumb { background: #94B5D7; border-radius: 2px; }
+    .modal-title-img {
+      width: 100%;
+      max-height: 52px;
+      object-fit: contain;
+      object-position: left;
+      margin-bottom: 14px;
+    }
+    .modal-title-text {
+      font-size: 16px;
+      font-weight: 700;
+      color: #2A4C71;
+      margin-bottom: 14px;
+      font-family: "Noto Serif SC", serif;
+    }
+    .bubbles { display: flex; flex-direction: column; gap: 10px; }
+    .bubble {
+      padding: 10px 13px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 95%;
+      font-family: "Noto Serif SC", serif;
+    }
+    .bubble-left {
+      background: #EBF4F9;
+      color: #2A4C71;
+      border-bottom-left-radius: 3px;
+      align-self: flex-start;
+    }
+    .bubble-right {
+      background: #D3E6EF;
+      color: #2A4C71;
+      border-bottom-right-radius: 3px;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .bubble-author {
+      font-size: 10px;
+      font-weight: 700;
+      margin-bottom: 5px;
+      opacity: 0.55;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.35);
+      border: none;
+      color: #fff;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+    .modal-close:hover { background: rgba(0,0,0,0.55); }
   </style>
 </head>
+<div class="spot-modal-overlay" id="spotModal">
+    <div class="spot-modal">
+      <div class="photo-area" id="modalPhotoArea">
+        <button class="modal-close" id="modalClose">✕</button>
+        <button class="photo-btn prev" id="photoPrev">‹</button>
+        <button class="photo-btn next" id="photoNext">›</button>
+        <div class="photo-dots" id="photoDots"></div>
+        <div class="photo-counter" id="photoCounter"></div>
+      </div>
+      <div class="modal-body">
+        <div id="modalTitle"></div>
+        <div class="bubbles" id="modalBubbles"></div>
+      </div>
+    </div>
+  </div>
 <body>
 
   <header>
@@ -297,7 +472,8 @@
       drinks:      '🧋',
       western:     '🍕',
       japanese:    '🍱',
-      dessert:     '🍦'
+      dessert:     '🍦',
+      hotel: '🏨'
     };
     const map = L.map('map').setView([38, -96], 4);
 
@@ -329,9 +505,10 @@
         html += `<div class="section-label">景点</div>`;
         place.spots.forEach(s => {
           const icon = typeEmoji[s.type] || '📍';
-          html += `<div class="place-row">
+          const hasContent = s.photos || s.story;
+          html += `<div class="place-row" ${hasContent ? `onclick="openSpotModal(${JSON.stringify(s).replace(/"/g, '&quot;')})"` : ''} style="${hasContent ? 'cursor:pointer' : ''}">
             <div class="place-icon" style="background:#EBF4F9;font-size:14px">${icon}</div>
-            <div class="place-text">${s.name}</div>
+            <div class="place-text">${s.name}${hasContent ? ' <span style="font-size:11px;color:#94B5D7">›</span>' : ''}</div>
           </div>`;
         });
       }
@@ -340,9 +517,10 @@
         html += `<div class="section-label">餐厅</div>`;
         place.restaurants.forEach(r => {
           const icon = typeEmoji[r.type] || '🍽';
-          html += `<div class="place-row">
+          const hasContent = r.photos || r.story;
+          html += `<div class="place-row" ${hasContent ? `onclick="openSpotModal(${JSON.stringify(r).replace(/"/g, '&quot;')})"` : ''} style="${hasContent ? 'cursor:pointer' : ''}">
             <div class="place-icon" style="background:#EBF4F9;font-size:14px">${icon}</div>
-            <div class="place-text">${r.name}</div>
+            <div class="place-text">${r.name}${hasContent ? ' <span style="font-size:11px;color:#94B5D7">›</span>' : ''}</div>
           </div>`;
         });
       }
@@ -496,18 +674,31 @@
             const icon = L.divIcon({
               className: '',
               html: `<div style="
-                width:10px; height:10px;
+                width:14px; height:14px;
                 background:${place.color};
                 border-radius:50%;
                 border:2px solid #fff;
                 box-shadow:0 0 6px ${place.color}99;
+                cursor:pointer;
               "></div>`,
-              iconSize: [10, 10],
-              iconAnchor: [5, 5],
+              iconSize: [16, 16],
+              iconAnchor: [8, 8],
               popupAnchor: [0, -8]
             });
-            const m = L.marker(spot.coords, { icon })
-              .bindPopup(`<div class="popup-title">📍 ${spot.name}</div><div class="popup-sub">${place.name}</div>`);
+
+            const m = L.marker(spot.coords, { icon }).addTo(map);
+
+            if (spot.photos || spot.story) {
+              m.on('click', () => openSpotModal(spot));
+            } else {
+              m.bindPopup(`
+                <div class="popup-title">
+                  ${typeEmoji[spot.type] || '📍'} ${spot.name}
+                </div>
+                <div class="popup-sub">${place.name}</div>
+              `);
+            }
+
             detailMarkers.push(m);
           });
 
@@ -516,18 +707,31 @@
             const icon = L.divIcon({
               className: '',
               html: `<div style="
-                width:10px; height:10px;
+                width:14px; height:14px;
                 background:#fff;
                 border-radius:2px;
                 border:2px solid ${place.color};
                 box-shadow:0 0 6px ${place.color}99;
+                cursor:pointer;
               "></div>`,
-              iconSize: [10, 10],
-              iconAnchor: [5, 5],
+              iconSize: [16, 16],
+              iconAnchor: [8, 8],
               popupAnchor: [0, -8]
             });
-            const m = L.marker(r.coords, { icon })
-              .bindPopup(`<div class="popup-title">🍜 ${r.name}</div><div class="popup-sub">${place.name}</div>`);
+
+            const m = L.marker(r.coords, { icon }).addTo(map);
+
+            if (r.photos || r.story) {
+              m.on('click', () => openSpotModal(r));
+            } else {
+              m.bindPopup(`
+                <div class="popup-title">
+                  ${typeEmoji[r.type] || '🍽'} ${r.name}
+                </div>
+                <div class="popup-sub">${place.name}</div>
+              `);
+            }
+
             detailMarkers.push(m);
           });
         });
@@ -540,6 +744,120 @@
         `translateX(${-x * 2}px)`;
       document.querySelector('.sidebar').style.transform =
         `translateY(${-y * 1.5}px)`;
+    });
+    
+    // 景点弹窗逻辑
+    let currentPhotos = [];
+    let currentPhotoIndex = 0;
+
+function openSpotModal(spot) {
+      if (!spot.photos && !spot.story) return;
+
+      currentPhotos = spot.photos || [];
+      currentPhotoIndex = 0;
+
+      const overlay = document.getElementById('spotModal');
+      const photoArea = document.getElementById('modalPhotoArea');
+      const titleEl = document.getElementById('modalTitle');
+      const bubblesEl = document.getElementById('modalBubbles');
+      const dotsEl = document.getElementById('photoDots');
+      const counterEl = document.getElementById('photoCounter');
+      const modal = overlay.querySelector('.spot-modal');
+
+      // 检测第一张照片方向决定布局
+      const firstPhoto = currentPhotos[0];
+      const isPortrait = firstPhoto && firstPhoto.orientation === 'portrait';
+
+      if (isPortrait) {
+        modal.style.width = '600px';
+        modal.style.flexDirection = 'row';
+        modal.style.maxHeight = '85vh';
+        photoArea.style.width = '50%';
+        photoArea.style.height = 'auto';
+        photoArea.style.minHeight = '400px';
+        photoArea.style.flexShrink = '0';
+      } else {
+        modal.style.width = '520px';
+        modal.style.flexDirection = 'column';
+        modal.style.maxHeight = '88vh';
+        photoArea.style.width = '100%';
+        photoArea.style.height = '320px';
+        photoArea.style.minHeight = 'unset';
+        photoArea.style.flexShrink = '0';
+      }
+
+      // 照片
+      photoArea.querySelectorAll('img.spot-photo').forEach(el => el.remove());
+      dotsEl.innerHTML = '';
+
+      if (currentPhotos.length > 0) {
+        currentPhotos.forEach((photo, i) => {
+          const src = typeof photo === 'string' ? photo : photo.src;
+          const img = document.createElement('img');
+          img.className = 'spot-photo';
+          img.src = src;
+          img.style.opacity = i === 0 ? '1' : '0';
+          img.style.zIndex = i === 0 ? '1' : '0';
+          photoArea.appendChild(img);
+
+          const dot = document.createElement('div');
+          dot.className = 'photo-dot' + (i === 0 ? ' active' : '');
+          dot.addEventListener('click', () => goToPhoto(i));
+          dotsEl.appendChild(dot);
+        });
+
+        counterEl.textContent = `1 / ${currentPhotos.length}`;
+        document.getElementById('photoPrev').style.display = currentPhotos.length > 1 ? 'flex' : 'none';
+        document.getElementById('photoNext').style.display = currentPhotos.length > 1 ? 'flex' : 'none';
+      } else {
+        counterEl.textContent = '';
+        document.getElementById('photoPrev').style.display = 'none';
+        document.getElementById('photoNext').style.display = 'none';
+      }
+
+      // 标题
+      if (spot.titleImage) {
+        titleEl.innerHTML = `<img class="modal-title-img" src="${spot.titleImage}">`;
+      } else {
+        titleEl.innerHTML = `<div class="modal-title-text">${spot.name}</div>`;
+      }
+
+      // 气泡
+      bubblesEl.innerHTML = '';
+      if (spot.story) {
+        spot.story.forEach(s => {
+          const div = document.createElement('div');
+          div.className = 'bubble ' + (s.author === '小鱼' ? 'bubble-right' : 'bubble-left');
+          div.innerHTML = `<div class="bubble-author">${s.author}</div>${s.text}`;
+          bubblesEl.appendChild(div);
+        });
+      }
+
+      overlay.classList.add('active');
+    }
+
+    function goToPhoto(index) {
+      const photos = document.querySelectorAll('.spot-photo');
+      const dots = document.querySelectorAll('.photo-dot');
+      photos[currentPhotoIndex].style.opacity = '0';
+      photos[currentPhotoIndex].style.zIndex = '0';
+      dots[currentPhotoIndex].classList.remove('active');
+      currentPhotoIndex = (index + currentPhotos.length) % currentPhotos.length;
+      photos[currentPhotoIndex].style.opacity = '1';
+      photos[currentPhotoIndex].style.zIndex = '1';
+      dots[currentPhotoIndex].classList.add('active');
+      document.getElementById('photoCounter').textContent = `${currentPhotoIndex + 1} / ${currentPhotos.length}`;
+    }
+
+    document.getElementById('photoPrev').addEventListener('click', () => goToPhoto(currentPhotoIndex - 1));
+    document.getElementById('photoNext').addEventListener('click', () => goToPhoto(currentPhotoIndex + 1));
+    document.getElementById('modalClose').addEventListener('click', () => {
+      document.getElementById('spotModal').classList.remove('active');
+    });
+    document.getElementById('spotModal').addEventListener('click', e => {
+      if (e.target === document.getElementById('spotModal')) {
+        document.getElementById('spotModal').classList.remove('active');
+      }
     });
   </script>
 </body>

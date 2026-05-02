@@ -94,10 +94,89 @@
       "radius": 45000,
       "coords": [36.8529, -75.9780],
       "spots": [
-        { "name": "Virginia Beach","type": "beach", "coords": [36.8529, -75.9780] },
-        { "name": "USS Wisconsin BB-64", "type": "museum", "coords": [36.8462, -76.2980] }
+        { 
+            "name": "Virginia Beach", 
+            "type": "beach", 
+            "coords": [36.8529, -75.9780],
+            "titleImage": "images/title-virginiabeach.png",
+            "photos": [
+                { "src": "images/spots/beach1.JPG", "orientation": "landscape" },
+                { "src": "images/spots/beach2.JPG", "orientation": "landscape" }
+            ],
+            "story":[
+                { "author": "小比", "text": "没想到吃完饭时间刚好我们去追到了落日，和你在一起时一切总是刚刚好，于是自大地认为连老天都祝福我们。但或许只是因为你，有你在的任何时刻都有幸福之处。" },
+                { "author": "小比", "text": "有时候觉得拍照好麻烦，太阳那么大，但你为什么还是这么酷。" }
+            ]
+        },
+        { 
+            "name": "USS Wisconsin BB-64", 
+            "type": "museum", 
+            "coords": [36.8462, -76.2980],
+            "titleImage": "images/title-wisconsin.png",
+            "photos": [ 
+                { "src": "images/spots/wisconsin1.JPG", "orientation": "portrait" },
+                { "src": "images/spots/wisconsin2.JPG", "orientation": "portrait" },
+                { "src": "images/spots/wisconsin3.jpeg", "orientation": "portrait" },
+                { "src": "images/spots/wisconsin4.jpeg", "orientation": "portrait" },
+                { "src": "images/spots/wisconsin5.jpeg", "orientation": "portrait" }
+            ],
+            "story": [
+                { "author": "小比", "text": "平行世界里我们是会俩位塔吊司机吗？平行世界里我们会是俩名海军吗？" }
+            ]
+        },
+        {
+            "name": "Red Roof Inn PLUS+",
+            "type": "hotel",
+            "coords": [36.8521, -75.9773],
+            "titleImage": "images/title-redroof.png",
+            "photos": [
+                { "src": "images/spots/redroof1.jpeg", "orientation": "portrait" },
+                { "src": "images/spots/redroof2.JPG", "orientation": "portrait" }
+            ],
+            "story": [
+                { "author": "小比", "text": "Virginia Beach有种神奇的魔力，像穿越进了80年代的美国公路电影。看到我们俩要住汽车旅馆的时候其实心里有点害怕，把门锁紧后安全感又油然而生。后来发现是因为这里的很多场景都不是我所熟悉的，所以有种穿越的恍惚感。我突然很感恩，觉得我们在有限的人生里一起体会到了世界的不同维度，多么幸运，要把这些宝贵的记忆都留下。" }
+            ]
+        },
+        {
+            "name": "Four Points by Sheraton",
+            "type": "hotel",
+            "coords": [36.8536, -75.9751],
+            "titleImage": "images/title-sheraton.png",
+            "photos": [
+                { "src": "images/spots/sheraton1.JPG", "orientation": "landscape" },
+                { "src": "images/spots/sheraton2.JPG", "orientation": "landscape" }
+            ],
+            "story": [
+                { "author": "小比", "text": "你在蓝调时光里转圈圈消食，我头疼晕倒在太软的床铺，我们都有点不舒服，可我觉得如果现在变成永恒的话，我愿意。" }
+            ]
+        }
       ],
-      "restaurants": [],
+      "restaurants": [
+        {
+            "name": "Eurasia Cafe",
+            "type": "western",
+            "coords": [36.8341, -75.9823],
+            "titleImage": "images/title-eurasia.png",
+            "photos": [
+                { "src": "images/spots/eurasia.JPG", "orientation": "portrait" }
+            ],
+            "story": [
+                { "author": "小比", "text": "永远手抖的老公，和惋惜美照的老婆。不过老婆不知道除了她以外，大家每时每刻都可以看到比所有照片中都更美丽的她。" }
+            ]
+        },
+        {
+            "name": "Joyu Tea & Coffee",
+            "type": "drinks",
+            "coords": [36.7889, -76.0712],
+            "titleImage": "images/title-joyu.png",
+            "photos": [
+                { "src": "images/spots/joyu.jpeg", "orientation": "landscape" }
+            ],
+            "story": [
+                { "author": "小比", "text": "透过玻璃的太阳好晒啊，甜点甜腻腻的，我有点想睡觉，你呢？" }
+            ]
+        }
+      ],
       "memory": "和你一起住汽车旅馆像我们一起度过了很多截然不同的人生。",
       "cover": "images/virginiabeach.JPG"
     }
