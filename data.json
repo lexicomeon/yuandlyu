@@ -1,0 +1,99 @@
+{
+  "places": [
+    {
+      "name": "Washington DC",
+      "emoji": "🎓",
+      "color": "#e2b96f",
+      "radius": 55000,
+      "coords": [38.9072, -77.0369],
+      "spots": [
+        { "name": "JHU DC", "coords": [38.8954, -77.0264] },
+        { "name": "Capital One Arena", "coords": [38.8981, -77.0209] }
+      ],
+      "restaurants": [],
+      "memory": "我居然可以在这里遇见你！"
+    },
+    {
+      "name": "New York",
+      "emoji": "🗽",
+      "color": "#a78bfa",
+      "radius": 65000,
+      "coords": [40.7128, -74.0060],
+      "spots": [
+        { "name": "Time Square", "coords": [40.7580, -73.9855] }
+      ],
+      "restaurants": [
+        { "name": "重庆老灶火锅", "coords": [40.7448, -73.7948] }
+      ],
+      "memory": "总说这里有不是很好的回忆，但大巴上你坐在我身边我很开心"
+    },
+    {
+      "name": "Orlando",
+      "emoji": "🎡",
+      "color": "#34d399",
+      "radius": 50000,
+      "coords": [28.5383, -81.3792],
+      "spots": [
+        { "name": "Islands of Adventure", "coords": [28.4722, -81.4708] },
+        { "name": "Universal Studios", "coords": [28.4749, -81.4679] }
+      ],
+      "restaurants": [],
+      "memory": "从天上飞下来的时候我希望抓着你的手"
+    },
+    {
+      "name": "Pittsburgh",
+      "emoji": "⛷️",
+      "color": "#60a5fa",
+      "radius": 35000,
+      "coords": [40.4406, -79.9959],
+      "spots": [
+        { "name": "Seven Springs", "coords": [39.9368, -79.2939] }
+      ],
+      "restaurants": [
+        { "name": "Wushiland", "coords": [40.4406, -79.9959] }
+      ],
+      "memory": "滑雪完一时兴起去了匹兹堡，我会永远记得这样冲动的瞬间，那天的夕阳很通透"
+    },
+    {
+      "name": "Baltimore",
+      "emoji": "⚓",
+      "color": "#f472b6",
+      "radius": 40000,
+      "coords": [39.2904, -76.6122],
+      "spots": [],
+      "restaurants": [],
+      "memory": "匆匆忙忙地一起去办正事，好像大人一样"
+    },
+    {
+      "name": "Los Angeles",
+      "emoji": "🌴",
+      "color": "#f97316",
+      "radius": 80000,
+      "coords": [34.0522, -118.2437],
+      "spots": [
+        { "name": "Disney California Adventure", "coords": [33.8093, -117.9188] },
+        { "name": "Santa Monica 落日飞车", "coords": [34.0095, -118.4975] },
+        { "name": "Getty Center ", "coords": [34.0780, -118.4741] },
+        { "name": "Beverly Hills", "coords": [34.0736, -118.4004] }
+      ],
+      "restaurants": [
+        { "name": "海底捞", "coords": [34.0484, -118.2554] }
+      ],
+      "memory": "和你度过阳光很好的很多天"
+    },
+    {
+      "name": "Virginia Beach",
+      "emoji": "🏖️",
+      "color": "#38bdf8",
+      "radius": 45000,
+      "coords": [36.8529, -75.9780],
+      "spots": [
+        { "name": "Virginia Beach", "coords": [36.8529, -75.9780] },
+        { "name": "USS Wisconsin BB-64", "coords": [36.8462, -76.2980] }
+      ],
+      "restaurants": [],
+      "memory": "和你一起住汽车旅馆像我们一起度过了很多不同的人生"
+    }
+
+  ]
+}

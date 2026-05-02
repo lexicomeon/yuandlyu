@@ -1,0 +1,71 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {"name": "Washington DC", "emoji": "🎓", "color": "#e2b96f"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-77.1198, 38.9343], [-77.0397, 38.9957], [-76.9094, 38.8928],
+          [-77.0087, 38.7916], [-77.1198, 38.8354], [-77.1198, 38.9343]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "纽约 New York", "emoji": "🗽", "color": "#a78bfa"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-74.2591, 40.4774], [-73.7004, 40.4774], [-73.7004, 40.9176],
+          [-74.0431, 40.9176], [-74.2591, 40.7282], [-74.2591, 40.4774]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "洛杉矶 Los Angeles", "emoji": "🌴", "color": "#f97316"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-118.6682, 33.7037], [-117.6462, 33.7037], [-117.6462, 34.3373],
+          [-118.1214, 34.3373], [-118.6682, 34.0900], [-118.6682, 33.7037]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "奥兰多 Orlando", "emoji": "🎡", "color": "#34d399"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-81.5158, 28.3566], [-81.1168, 28.3566],
+          [-81.1168, 28.6264], [-81.5158, 28.6264], [-81.5158, 28.3566]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "Virginia Beach", "emoji": "🏖️", "color": "#38bdf8"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-76.1330, 36.5505], [-75.8648, 36.5505],
+          [-75.8648, 36.9285], [-76.1330, 36.9285], [-76.1330, 36.5505]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {"name": "巴尔的摩 Baltimore", "emoji": "⚓", "color": "#f472b6"},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-76.7119, 39.1972], [-76.5295, 39.1972],
+          [-76.5295, 39.3724], [-76.7119, 39.3724], [-76.7119, 39.1972]
+        ]]
+      }
+    }
+  ]
+}

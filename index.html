@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小鱼 & 小比的旅行地图</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: #D3E6EF;
+      color: #2A4C71;
+      font-family: "Noto Serif SC", serif;
+    }
+
+    header {
+      background: #D3E6EF;
+      border-bottom: 1px solid #94B5D7;
+      padding: 16px 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #2A4C71;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #9897BC;
+    }
+
+    .main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* 侧边栏 */
+    .sidebar {
+      width: 272px;
+      min-width: 272px;
+      background: #D3E6EF;
+      border-right: 1px solid #94B5D7;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 8px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar { width: 3px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: #94B5D7; border-radius: 2px; }
+
+    /* 城市信息卡片 */
+    .city-card {
+      margin: 14px 14px 0;
+      background: #fff;
+      border: 1px solid #b8d4e3;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(42,76,113,0.1);
+    }
+
+    .city-name {
+      font-size: 17px;
+      font-weight: 700;
+      color: #2A4C71;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 3px;
+    }
+
+    .city-meta {
+      font-size: 11px;
+      color: #9897BC;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .memory-pill {
+      background: #EBF4F9;
+      border-left: 3px solid #94B5D7;
+      border-radius: 0 8px 8px 0;
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #2A4C71;
+      font-style: italic;
+      line-height: 1.7;
+    }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #9897BC;
+      padding: 16px 18px 6px;
+      text-transform: uppercase;
+    }
+
+    .place-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 14px;
+      margin: 0 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .place-row:hover { background: #c2dcea; }
+
+    .place-icon {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .place-text {
+      font-size: 13px;
+      color: #2A4C71;
+    }
+
+    .empty-hint {
+      padding: 24px 20px;
+      font-size: 13px;
+      color: #9897BC;
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* 底部城市切换 */
+    .city-list {
+      border-top: 1px solid #94B5D7;
+      padding: 8px 6px;
+      flex-shrink: 0;
+      background: #c2dcea;
+    }
+
+    .city-chip {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .city-chip:hover { background: #b0d0e0; }
+    .city-chip.active { background: #fff; box-shadow: 0 1px 6px rgba(42,76,113,0.12); }
+
+    .chip-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    .chip-label {
+      font-size: 12px;
+      color: #4a7299;
+      transition: color 0.15s;
+    }
+
+    .city-chip.active .chip-label {
+      color: #2A4C71;
+      font-weight: 700;
+    }
+
+    /* 地图 */
+    #map { flex: 1; }
+
+    /* Leaflet 弹窗 */
+    .leaflet-popup-content-wrapper {
+      background: #fff;
+      border: 1px solid #94B5D7;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(42,76,113,0.2);
+    }
+    .leaflet-popup-tip { background: #fff; }
+    .leaflet-popup-content { margin: 12px 14px; }
+    .popup-title {
+      font-family: "Noto Serif SC", serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #2A4C71;
+      margin-bottom: 4px;
+    }
+    .popup-sub {
+      font-size: 12px;
+      color: #9897BC;
+    }
+
+    /* 侧边栏内容淡入 */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .city-card {
+      animation: fadeSlideIn 0.35s ease forwards;
+    }
+
+    .section-label {
+      animation: fadeSlideIn 0.4s ease forwards;
+    }
+
+    .place-row {
+      animation: fadeSlideIn 0.45s ease forwards;
+    }
+
+    /* 城市列表滑动过渡 */
+    .city-chip {
+      transition: background 0.2s ease, transform 0.15s ease,
+                  box-shadow 0.2s ease;
+    }
+
+    .city-chip:hover {
+      transform: translateX(4px);
+    }
+
+    .city-chip.active {
+      transform: translateX(4px);
+    }
+
+    /* header 标题淡入 */
+    header {
+      animation: fadeSlideIn 0.5s ease forwards;
+    }
+
+    /* 光晕呼吸 — 通过 Leaflet circle 的 fillOpacity 变化实现 */
+    @keyframes glowPulse {
+      0%,100% { opacity: 0.9; }
+      50%      { opacity: 1;   }
+    }
+
+    .leaflet-interactive {
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+   
+    header, .sidebar {
+      transition: transform 0.1s ease-out;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>小鱼 & 小比的旅行地图</h1>
+    <span class="subtitle">记录我们一起看过的世界🌍</span>
+  </header>
+
+  <div class="main">
+    <div class="sidebar">
+      <div class="sidebar-scroll" id="sidebar-content">
+        <div class="empty-hint">点击地图上的城市光晕<br>查看我们的旅行故事</div>
+      </div>
+      <div class="city-list" id="city-list"></div>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const typeEmoji = {
+      themepark:   '🎡',
+      museum:      '🏛',
+      beach:       '🏖',
+      outdoor:     '⛷',
+      performance: '🎭',
+      landmark:    '🏙',
+      campus:      '🎓',
+      chinese:     '🍜',
+      drinks:      '☕',
+      western:     '🍕',
+      japanese:    '🍱',
+      dessert:     '🍦'
+    };
+    const map = L.map('map').setView([38, -96], 4);
+
+    // 深蓝地图底图
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+      attribution: '© CartoDB',
+      detectRetina: true,
+      maxZoom: 19
+    }).addTo(map);
+
+    // 地图背景色改成深蓝
+    document.getElementById('map').style.background = '#1a2744';
+
+    let detailMarkers = [];
+
+    function showSidebar(place) {
+      let html = `
+        <div class="city-card">
+          <div class="city-name">
+            <span>${place.emoji}</span>${place.name}
+          </div>
+          <div class="city-meta">美国 · 我们去过的地方</div>
+          ${place.memory ? `<div class="memory-pill">💬 ${place.memory}</div>` : ''}
+        </div>
+      `;
+
+      if (place.spots.length > 0) {
+        html += `<div class="section-label">景点</div>`;
+        place.spots.forEach(s => {
+          const icon = typeEmoji[s.type] || '📍';
+          html += `<div class="place-row">
+            <div class="place-icon" style="background:#EBF4F9;font-size:14px">${icon}</div>
+            <div class="place-text">${s.name}</div>
+          </div>`;
+        });
+      }
+
+      if (place.restaurants.length > 0) {
+        html += `<div class="section-label">餐厅</div>`;
+        place.restaurants.forEach(r => {
+          const icon = typeEmoji[r.type] || '🍽';
+          html += `<div class="place-row">
+            <div class="place-icon" style="background:#EBF4F9;font-size:14px">${icon}</div>
+            <div class="place-text">${r.name}</div>
+          </div>`;
+        });
+      }
+
+      if (place.spots.length === 0 && place.restaurants.length === 0) {
+        html += `<div class="empty-hint">还没有添加内容</div>`;
+      }
+
+      const sidebarEl = document.getElementById('sidebar-content');
+      sidebarEl.style.opacity = '0';
+      sidebarEl.style.transform = 'translateY(8px)';
+      sidebarEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      sidebarEl.innerHTML = html;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          sidebarEl.style.opacity = '1';
+          sidebarEl.style.transform = 'translateY(0)';
+        });
+      });
+
+      document.querySelectorAll('.city-chip').forEach(el => {
+        el.classList.toggle('active', el.dataset.name === place.name);
+      });
+
+      map.flyTo(place.coords, 11, { duration: 1.4 });
+    }
+
+    function updateDetailMarkers() {
+      const zoom = map.getZoom();
+      detailMarkers.forEach(m => {
+        if (zoom >= 10) {
+          if (!map.hasLayer(m)) m.addTo(map);
+        } else {
+          if (map.hasLayer(m)) map.removeLayer(m);
+        }
+      });
+    }
+
+    map.on('zoomend', updateDetailMarkers);
+
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => {
+        // 城市之间的连线动画
+        const coords = data.places.map(p => p.coords);
+        for (let i = 0; i < coords.length - 1; i++) {
+          const from = coords[i];
+          const to = coords[i + 1];
+          const dist = Math.sqrt(
+            Math.pow(to[0] - from[0], 2) +
+            Math.pow(to[1] - from[1], 2)
+          );
+
+          let points = [];
+          if (dist < 15) {
+            points = [from, to];
+          } else {
+            const steps = 80;
+            for (let t = 0; t <= steps; t++) {
+              const frac = t / steps;
+              const lat = from[0] * (1 - frac) + to[0] * frac;
+              const lng = from[1] * (1 - frac) + to[1] * frac;
+              const arc = Math.sin(Math.PI * frac) * (dist * 0.06);
+              points.push([lat + arc, lng]);
+            }
+          }
+
+          // 先画一条完整的淡色底线
+          L.polyline(points, {
+            color: '#94B5D7',
+            weight: 1,
+            opacity: 0.2,
+          }).addTo(map);
+
+          // 再画动画线，从0点逐渐延伸
+          const animLine = L.polyline([], {
+            color: '#94B5D7',
+            weight: 1.5,
+            opacity: 0.6,
+          }).addTo(map);
+
+          // 延迟启动，每条线错开时间
+          const delay = i * 600 + 800;
+          const duration = 1200;
+          const startTime = performance.now() + delay;
+
+          function animate(line, pts) {
+            function step(now) {
+              if (now < startTime) {
+                requestAnimationFrame(step);
+                return;
+              }
+              const elapsed = now - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const count = Math.floor(progress * pts.length);
+              line.setLatLngs(pts.slice(0, count));
+              if (progress < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+          }
+
+          animate(animLine, points);
+        }
+        // 底部城市列表
+        const cityListEl = document.getElementById('city-list');
+        data.places.forEach(place => {
+          const chip = document.createElement('div');
+          chip.className = 'city-chip';
+          chip.dataset.name = place.name;
+          chip.innerHTML = `
+            <div class="chip-dot" style="background:${place.color}"></div>
+            <div class="chip-label">${place.emoji} ${place.name}</div>
+          `;
+          chip.addEventListener('click', () => showSidebar(place));
+          cityListEl.appendChild(chip);
+        });
+
+        data.places.forEach(place => {
+
+          // 三层光晕
+          [[2.2, 0.07], [1.3, 0.14], [0.5, 0.3]].forEach(([mult, opacity]) => {
+            L.circle(place.coords, {
+              radius: place.radius * mult,
+              weight: 0, opacity: 0,
+              fillColor: place.color,
+              fillOpacity: opacity
+            }).addTo(map);
+          });
+
+          // 中心发光点
+          const cityIcon = L.divIcon({
+            className: '',
+            html: `<div style="
+              width:10px; height:10px;
+              background:${place.color};
+              border-radius:50%;
+              box-shadow: 0 0 4px 2px ${place.color}cc,
+                          0 0 10px 4px ${place.color}66;
+              cursor:pointer;
+            "></div>`,
+            iconSize: [10, 10],
+            iconAnchor: [5, 5]
+          });
+
+          L.marker(place.coords, { icon: cityIcon })
+            .addTo(map)
+            .on('click', () => showSidebar(place));
+
+          // 景点标记
+          place.spots.forEach(spot => {
+            const icon = L.divIcon({
+              className: '',
+              html: `<div style="
+                width:10px; height:10px;
+                background:${place.color};
+                border-radius:50%;
+                border:2px solid #fff;
+                box-shadow:0 0 6px ${place.color}99;
+              "></div>`,
+              iconSize: [10, 10],
+              iconAnchor: [5, 5],
+              popupAnchor: [0, -8]
+            });
+            const m = L.marker(spot.coords, { icon })
+              .bindPopup(`<div class="popup-title">📍 ${spot.name}</div><div class="popup-sub">${place.name}</div>`);
+            detailMarkers.push(m);
+          });
+
+          // 餐厅标记
+          place.restaurants.forEach(r => {
+            const icon = L.divIcon({
+              className: '',
+              html: `<div style="
+                width:10px; height:10px;
+                background:#fff;
+                border-radius:2px;
+                border:2px solid ${place.color};
+                box-shadow:0 0 6px ${place.color}99;
+              "></div>`,
+              iconSize: [10, 10],
+              iconAnchor: [5, 5],
+              popupAnchor: [0, -8]
+            });
+            const m = L.marker(r.coords, { icon })
+              .bindPopup(`<div class="popup-title">🍜 ${r.name}</div><div class="popup-sub">${place.name}</div>`);
+            detailMarkers.push(m);
+          });
+        });
+      });
+    // 鼠标视差
+    document.getElementById('map').addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 6;
+      const y = (e.clientY / window.innerHeight - 0.5) * 3;
+      document.querySelector('header').style.transform =
+        `translateX(${-x * 2}px)`;
+      document.querySelector('.sidebar').style.transform =
+        `translateY(${-y * 1.5}px)`;
+    });
+  </script>
+</body>
+</html>
