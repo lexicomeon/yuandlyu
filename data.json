@@ -11,7 +11,8 @@
         { "name": "Capital One Arena", "type": "performance", "coords": [38.8981, -77.0209] }
       ],
       "restaurants": [],
-      "memory": "我居然可以在这里遇见你！"
+      "memory": "我居然可以在这里遇见你！",
+      "cover": "images/dc.JPG"
     },
     {
       "name": "New York",
@@ -25,7 +26,8 @@
       "restaurants": [
         { "name": "重庆老灶火锅","type": "chinese", "coords": [40.7448, -73.7948] }
       ],
-      "memory": "总说这里有不是很好的回忆，但大巴上你坐在我身边我很开心^ ^"
+      "memory": "虽然总说这里有不是很好的回忆，但大巴上你坐在我身边我很开心^ ^",
+      "cover": "images/newyork.JPG"
     },
     {
       "name": "Orlando",
@@ -38,7 +40,8 @@
         { "name": "Universal Studios","type": "themepark",  "coords": [28.4749, -81.4679] }
       ],
       "restaurants": [],
-      "memory": "从天上飞下来的时候我希望抓着你的手。"
+      "memory": "从天上飞下来的时候我希望抓着你的手。",
+      "cover": "images/orlando.JPG"
     },
     {
       "name": "Pittsburgh",
@@ -52,7 +55,8 @@
       "restaurants": [
         { "name": "Wushiland","type": "drinks", "coords": [40.4441, -79.9502] }
       ],
-      "memory": "滑雪完一时兴起去了匹兹堡，我会永远记得这样冲动的瞬间。"
+      "memory": "滑雪完一时兴起去了匹兹堡，我会永远记得这样冲动的瞬间。",
+      "cover": "images/pittsburgh.JPG"
     },
     {
       "name": "Baltimore",
@@ -62,7 +66,8 @@
       "coords": [39.2904, -76.6122],
       "spots": [],
       "restaurants": [],
-      "memory": "匆匆忙忙地一起去办正事，好像大人一样。"
+      "memory": "匆匆忙忙地一起去办正事，好像大人一样。",
+      "cover": "images/baltimore.jpeg"
     },
     {
       "name": "Los Angeles",
@@ -79,7 +84,8 @@
       "restaurants": [
         { "name": "海底捞", "type": "chinese", "coords": [34.0484, -118.2554] }
       ],
-      "memory": "和你度过阳光很好的很多天。"
+      "memory": "和你度过阳光很好的很多天。",
+      "cover": "images/la.JPG"
     },
     {
       "name": "Virginia Beach",
@@ -92,7 +98,8 @@
         { "name": "USS Wisconsin BB-64", "type": "museum", "coords": [36.8462, -76.2980] }
       ],
       "restaurants": [],
-      "memory": "和你一起住汽车旅馆像我们一起度过了很多截然不同的人生。"
+      "memory": "和你一起住汽车旅馆像我们一起度过了很多截然不同的人生。",
+      "cover": "images/virginiabeach.JPG"
     }
 
   ]
