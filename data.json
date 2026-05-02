@@ -7,8 +7,8 @@
       "radius": 55000,
       "coords": [38.9072, -77.0369],
       "spots": [
-        { "name": "JHU DC", "coords": [38.8954, -77.0264] },
-        { "name": "Capital One Arena", "coords": [38.8981, -77.0209] }
+        { "name": "JHU DC", "type": "campus", "coords": [38.8954, -77.0264] },
+        { "name": "Capital One Arena", "type": "performance", "coords": [38.8981, -77.0209] }
       ],
       "restaurants": [],
       "memory": "我居然可以在这里遇见你！"
@@ -20,12 +20,12 @@
       "radius": 65000,
       "coords": [40.7128, -74.0060],
       "spots": [
-        { "name": "Time Square", "coords": [40.7580, -73.9855] }
+        { "name": "Time Square", "type": "landmark", "coords": [40.7580, -73.9855] }
       ],
       "restaurants": [
-        { "name": "重庆老灶火锅", "coords": [40.7448, -73.7948] }
+        { "name": "重庆老灶火锅","type": "chinese", "coords": [40.7448, -73.7948] }
       ],
-      "memory": "总说这里有不是很好的回忆，但大巴上你坐在我身边我很开心"
+      "memory": "总说这里有不是很好的回忆，但大巴上你坐在我身边我很开心^ ^"
     },
     {
       "name": "Orlando",
@@ -34,11 +34,11 @@
       "radius": 50000,
       "coords": [28.5383, -81.3792],
       "spots": [
-        { "name": "Islands of Adventure", "coords": [28.4722, -81.4708] },
-        { "name": "Universal Studios", "coords": [28.4749, -81.4679] }
+        { "name": "Islands of Adventure", "type": "themepark", "coords": [28.4722, -81.4708] },
+        { "name": "Universal Studios","type": "themepark",  "coords": [28.4749, -81.4679] }
       ],
       "restaurants": [],
-      "memory": "从天上飞下来的时候我希望抓着你的手"
+      "memory": "从天上飞下来的时候我希望抓着你的手。"
     },
     {
       "name": "Pittsburgh",
@@ -47,12 +47,12 @@
       "radius": 35000,
       "coords": [40.4406, -79.9959],
       "spots": [
-        { "name": "Seven Springs", "coords": [39.9368, -79.2939] }
+        { "name": "Seven Springs","type": "outdoor", "coords": [39.9368, -79.2939] }
       ],
       "restaurants": [
-        { "name": "Wushiland", "coords": [40.4406, -79.9959] }
+        { "name": "Wushiland","type": "drinks", "coords": [40.4441, -79.9502] }
       ],
-      "memory": "滑雪完一时兴起去了匹兹堡，我会永远记得这样冲动的瞬间，那天的夕阳很通透"
+      "memory": "滑雪完一时兴起去了匹兹堡，我会永远记得这样冲动的瞬间。"
     },
     {
       "name": "Baltimore",
@@ -62,7 +62,7 @@
       "coords": [39.2904, -76.6122],
       "spots": [],
       "restaurants": [],
-      "memory": "匆匆忙忙地一起去办正事，好像大人一样"
+      "memory": "匆匆忙忙地一起去办正事，好像大人一样。"
     },
     {
       "name": "Los Angeles",
@@ -71,15 +71,15 @@
       "radius": 80000,
       "coords": [34.0522, -118.2437],
       "spots": [
-        { "name": "Disney California Adventure", "coords": [33.8093, -117.9188] },
-        { "name": "Santa Monica 落日飞车", "coords": [34.0095, -118.4975] },
-        { "name": "Getty Center ", "coords": [34.0780, -118.4741] },
-        { "name": "Beverly Hills", "coords": [34.0736, -118.4004] }
+        { "name": "Disney California Adventure", "type": "themepark", "coords": [33.8093, -117.9188] },
+        { "name": "Santa Monica 落日飞车", "type": "landmark", "coords": [34.0095, -118.4975] },
+        { "name": "Getty Center ", "type": "museum",  "coords": [34.0780, -118.4741] },
+        { "name": "Beverly Hills", "type": "landmark", "coords": [34.0736, -118.4004] }
       ],
       "restaurants": [
-        { "name": "海底捞", "coords": [34.0484, -118.2554] }
+        { "name": "海底捞", "type": "chinese", "coords": [34.0484, -118.2554] }
       ],
-      "memory": "和你度过阳光很好的很多天"
+      "memory": "和你度过阳光很好的很多天。"
     },
     {
       "name": "Virginia Beach",
@@ -88,11 +88,11 @@
       "radius": 45000,
       "coords": [36.8529, -75.9780],
       "spots": [
-        { "name": "Virginia Beach", "coords": [36.8529, -75.9780] },
-        { "name": "USS Wisconsin BB-64", "coords": [36.8462, -76.2980] }
+        { "name": "Virginia Beach","type": "beach", "coords": [36.8529, -75.9780] },
+        { "name": "USS Wisconsin BB-64", "type": "museum", "coords": [36.8462, -76.2980] }
       ],
       "restaurants": [],
-      "memory": "和你一起住汽车旅馆像我们一起度过了很多不同的人生"
+      "memory": "和你一起住汽车旅馆像我们一起度过了很多截然不同的人生。"
     }
 
   ]
